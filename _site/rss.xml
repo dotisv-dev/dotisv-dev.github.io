@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+        <title>点</title>
+        <description>点 - dotisv</description>
+        <link>http://dev.dotisv.com</link>
+        <link>http://dev.dotisv.com</link>
+        <lastBuildDate>2014-01-24T15:16:17+08:00</lastBuildDate>
+        <pubDate>2014-01-24T15:16:17+08:00</pubDate>
+        <ttl>1800</ttl>
+
+
+        <item>
+                <title>laravel前置知识点-Composer</title>
+                <description>&lt;h2 id=&quot;&quot;&gt;使用前提&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;在线安装Laravel时，需要通过Composer来进行安装；&lt;/li&gt;
+
+&lt;li&gt;即使是，下载Laravel的压缩包，也需要Composer来安装依赖的Libs&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;composer_&quot;&gt;Composer &lt;a href=&quot;http://www.getcomposer.org/&quot;&gt;官网&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;百度一下O(∩_∩)O哈哈~&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;简介&lt;/p&gt;
+
+&lt;p&gt;Composer[1]是PHP中用来管理依赖（dependency）关系的工具。 你可以在自己的项目中声明所依赖的外部工具库（libraries）， Composer会帮你安装这些依赖的库文件。&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;安装&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Mac、linux等系统可以通过下载composer.phar文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;命令：curl -sS https://getcomposer.org/installer | php&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;windows系统可以执行进行安装，安装包： &lt;a href=&quot;https://getcomposer.org/Composer-Setup.exe&quot;&gt;下载地址&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;使用&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;定义依赖关系&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;创建composer.json，编写:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+	&amp;quot;require&amp;quot;: {
+		&amp;quot;monolog/monolog&amp;quot;: &amp;quot;1.*&amp;quot;
+	}
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;执行下载&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;php composer.phar install&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;很简单哦，这将monolog加载到你们的项目中了&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&#39;composer-install-success&#39; src=&#39;/images/composer-install-success.png&#39; style=&#39;width:500px;align:center;&#39; /&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</description>
+                <link>http://dev.dotisv.com/2014/01/24/laravel-prepare-knowledge</link>
+                <guid>http://dev.dotisv.com/2014/01/24/laravel-prepare-knowledge</guid>
+                <pubDate>2014-01-24T00:00:00+08:00</pubDate>
+        </item>
+
+
+</channel>
+</rss>
