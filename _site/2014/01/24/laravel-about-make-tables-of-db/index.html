@@ -1,0 +1,314 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Laravel之数据的那点事 &larr; </title>
+   <meta name="author" content="dotisv" />
+
+   <link rel="start" href="/" />
+
+	
+	
+	
+  	<link rel="alternate" type="application/atom+xml" href="http://feeds.feedburner.com/dotisv" title="RSS feed" />
+	
+	
+
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/assets/themes/mark-reid/css/syntax.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/assets/themes/mark-reid/css/screen.css" type="text/css" />
+
+</head>
+<body id="">
+<div id="site">
+  
+  <div id="header">
+    <h1>
+    	<a href="/" title="点">点</a>
+    	<span class="byline">&larr; <a href="/">dotisv</a></span>
+    </h1>
+    <ul class="nav">
+      <li><a class="home" href="/">全部</a></li>
+      <li><a  href="/archive.html">档案</a></li>
+      <li><a  href="/pages.html">页面</a></li>
+      <li><a  href="/categories.html">分类</a></li>
+      <li><a  href="/tags.html">标记</a></li>
+    </ul>
+  </div>
+
+  <a href="http://github.com/dotisv" target="_blank">
+    <img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub">
+  </a>
+
+  
+<div id="page">
+	
+  <h1 class="emphnext">Laravel之数据的那点事</h1>
+  <ul class="tag_box inline">
+  
+  
+
+
+  
+    
+  
+
+
+
+  </ul>
+
+  <h1 id="">数据层</h1>
+
+<p>Web开发离不开MVC，M离不开持久层，先从数据库结构定义开始分析吧</p>
+
+<ul>
+<li>
+<p>表结构调整</p>
+
+<ol>
+<li>
+<p>创建表结构</p>
+
+<pre><code>Schema::create(&#39;users&#39;, function($table)
+{
+	$table-&gt;increments(&#39;id&#39;);
+});</code></pre>
+</li>
+
+<li>
+<p>重命名表结构</p>
+
+<pre><code>Schema::rename($from, $to)</code></pre>
+</li>
+
+<li>
+<p>指定链接数据库</p>
+
+<pre><code>Schema::connection(&#39;foo&#39;)-&gt;create(&#39;users&#39;, function($data)
+{
+	$table-&gt;increments(&#39;id&#39;);
+});</code></pre>
+</li>
+
+<li>
+<p>删除一个表</p>
+
+<pre><code>Schema::drop(&#39;users&#39;);
+Schema::dropIfExits(&#39;users&#39;);</code></pre>
+</li>
+</ol>
+</li>
+
+<li>
+<p>字段操作</p>
+
+<ol>
+<li>
+<p>添加字段</p>
+
+<pre><code>Schema::table(&#39;users&#39;, function($table)
+{
+	$table-&gt;string(&#39;email&#39;);
+});
+其他字段类型定义：
+bigIncrements(&#39;id&#39;); // bigint 20 pk
+bigInteger(&#39;votes&#39;); // bigint 20
+binary(&#39;data&#39;); // blob 0
+boolean(&#39;confirmed&#39;); // tinyint 1
+date(&#39;created_at&#39;); // date 0
+dateTime(&#39;created_at&#39;); // datetime 0
+decimal(&#39;amount&#39;, 5, 2); // decimal 5,2
+double(&#39;column&#39;, 15, 8); // double 15,8
+enum(&#39;choices&#39;, array(&#39;foo&#39;, &#39;bar&#39;)); // enum 0 value:&#39;foo&#39;,&#39;bar&#39;
+float(&#39;amount&#39;); // float 8,2
+increments(&#39;id&#39;); // int 10 pk
+integer(&#39;votes&#39;); // int 11 pk
+longText(&#39;description&#39;); // longtext 0
+mediumText(&#39;description&#39;); // mediumtext 0
+morphs(&#39;tagglable&#39;); // tagglable_id:int 10 另1个为:tagglable_type:varchar 255
+smallInteger(&#39;votes&#39;); // smallint 6
+softDeletes(); // add columns named deleted_at timestamp 0
+string(&#39;email&#39;); // varchar 255
+string(&#39;name&#39;, 100); // varchar 100 
+text(&#39;description&#39;); // text 0 
+time(&#39;sunrise&#39;); // time 0
+timestamp(&#39;added_on&#39;); // add column named created_at timestamp 0, other column named updated_at timestamp 0
+timestamps();
+nullable(); // 允许为空
+default($value); // 设置默认值
+unsigned(); // 无符号数值指定
+
+注意：可以使用after来指定顺序，如：$table-&gt;string(&#39;name&#39;)-&gt;after(&#39;email&#39;);</code></pre>
+</li>
+
+<li>
+<p>改名</p>
+
+<pre><code>Schema::table(&#39;users&#39;, function($table)
+{
+	$table-&gt;renameColumn(&#39;from&#39;, &#39;to&#39;);
+});</code></pre>
+</li>
+
+<li>
+<p>删除</p>
+
+<pre><code>Schema::table(&#39;users&#39;, function($table)
+{
+	// 单字段
+	$table-&gt;dropColumn(&#39;votes&#39;);
+	// 多字段
+	$table-&gt;dropColumn(&#39;votes&#39;, &#39;avatar&#39;, &#39;location&#39;);
+});</code></pre>
+</li>
+
+<li>
+<p>检测存在</p>
+
+<pre><code>if(Schema::hasTable(&#39;users&#39;))
+{
+	// 检测表
+}
+
+if(Schema::hasColumn(&#39;users&#39;, &#39;email&#39;))
+{
+	// 检测表中字段
+}</code></pre>
+</li>
+</ol>
+</li>
+
+<li>
+<p>索引-提高性能</p>
+
+<ol>
+<li>
+<p>创建索引</p>
+
+<pre><code>$table-&gt;primary(&#39;id&#39;); // 主键索引
+$table-&gt;primary(array(&#39;first&#39;, &#39;last&#39;)); // 组合索引
+$table-&gt;unique(&#39;email&#39;); // 唯一索引，也可以直接添加到定义字段后
+$table-&gt;index(&#39;state&#39;); // 基本索引</code></pre>
+</li>
+
+<li>
+<p>删除索引</p>
+
+<pre><code>$table-&gt;dropPrimary(&#39;id&#39;);
+$table-&gt;dropUnique(&#39;email&#39;);
+$table-&gt;dropIndex(&#39;state&#39;);</code></pre>
+</li>
+</ol>
+</li>
+
+<li>
+<p>外键约束-常常不使用</p>
+
+<ol>
+<li>
+<p>添加外键</p>
+
+<pre><code>$table-&gt;foreign(&#39;user_id&#39;)-&gt;references(&#39;id&#39;)-&gt;on(&#39;users&#39;);</code></pre>
+</li>
+
+<li>
+<p>声明约束</p>
+
+<pre><code>$table-&gt;foreign(&#39;user_id&#39;)
+	-&gt;references(&#39;id&#39;)-&gt;on(&#39;users&#39;)
+	-&gt;onDelete(&#39;cascade&#39;);</code></pre>
+</li>
+
+<li>
+<p>删除外键</p>
+
+<pre><code>$table-&gt;dropForeign(&#39;user_id&#39;);</code></pre>
+</li>
+</ol>
+</li>
+
+<li>
+<p>存储引擎选择</p>
+
+<pre><code>Schema::table(&#39;users&#39;, function($data)
+{
+	$table-&gt;engine = &#39;InnoDB&#39;;
+	$table-&gt;string(&#39;email&#39;);
+});</code></pre>
+</li>
+</ul>
+
+  <address class="signature">
+    <a class="author" href="/">dotisv</a> 
+    <span class="date">24 January 2014</span>
+    <span class="location"></span>
+  </address>
+  
+  <div class="prev-next">
+  
+    <a href="/2014/01/24/laravel-prepare-knowledge" class="next" title="laravel前置知识点-Composer">Next Post &rarr;</a>
+  
+  
+  </div>
+  
+</div><!-- End Page -->
+
+
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'dotisv'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+
+
+  
+  <div id="footer">
+  	<address>
+  		<span class="copyright">
+  			Content by <a href="/info/site.html">dotisv</a>. Design by 
+  			<a href="http://mark.reid.name/">Mark Reid</a>
+  			<br/>
+  			(<a rel="licence" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Some rights reserved</a>)			
+  		</span>
+  		<span class="engine">
+  			Powered by <a href="http://github.com/mojombo/jekyll/" title="A static, minimalist CMS">Jekyll</a>
+  		</span>
+  	</address>
+  </div>
+  
+</div>
+
+<!--[if IE 6]>
+<script type="text/javascript"> 
+	/*Load jQuery if not already loaded*/ if(typeof jQuery == 'undefined'){ document.write("<script type=\"text/javascript\"   src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js\"></"+"script>"); var __noconflict = true; } 
+	var IE6UPDATE_OPTIONS = {
+		icons_path: "http://static.ie6update.com/hosted/ie6update/images/"
+	}
+</script>
+<script type="text/javascript" src="http://static.ie6update.com/hosted/ie6update/ie6update.js"></script>
+<![endif]-->
+
+  
+</body>
+</html>
+

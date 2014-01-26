@@ -4,7 +4,7 @@
  <title>点</title>
  <link href="http://dev.dotisv.com/" rel="self"/>
  <link href="http://dev.dotisv.com"/>
- <updated>2014-01-24T15:16:17+08:00</updated>
+ <updated>2014-01-26T21:40:53+08:00</updated>
  <id>http://dev.dotisv.com</id>
  <author>
    <name>dotisv</name>
@@ -84,6 +84,193 @@
 &lt;p&gt;&lt;img alt=&#39;composer-install-success&#39; src=&#39;/images/composer-install-success.png&#39; style=&#39;width:500px;align:center;&#39; /&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;</content>
+ </entry>
+ 
+ <entry>
+   <title>Laravel之数据的那点事</title>
+   <link href="http://dev.dotisv.com/2014/01/24/laravel-about-make-tables-of-db"/>
+   <updated>2014-01-24T00:00:00+08:00</updated>
+   <id>http://dev.dotisv.com/2014/01/24/laravel-about-make-tables-of-db</id>
+   <content type="html">&lt;h1 id=&quot;&quot;&gt;数据层&lt;/h1&gt;
+
+&lt;p&gt;Web开发离不开MVC，M离不开持久层，先从数据库结构定义开始分析吧&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;表结构调整&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;创建表结构&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Schema::create(&amp;#39;users&amp;#39;, function($table)
+{
+	$table-&amp;gt;increments(&amp;#39;id&amp;#39;);
+});&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;重命名表结构&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Schema::rename($from, $to)&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;指定链接数据库&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Schema::connection(&amp;#39;foo&amp;#39;)-&amp;gt;create(&amp;#39;users&amp;#39;, function($data)
+{
+	$table-&amp;gt;increments(&amp;#39;id&amp;#39;);
+});&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;删除一个表&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Schema::drop(&amp;#39;users&amp;#39;);
+Schema::dropIfExits(&amp;#39;users&amp;#39;);&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;字段操作&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;添加字段&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Schema::table(&amp;#39;users&amp;#39;, function($table)
+{
+	$table-&amp;gt;string(&amp;#39;email&amp;#39;);
+});
+其他字段类型定义：
+bigIncrements(&amp;#39;id&amp;#39;); // bigint 20 pk
+bigInteger(&amp;#39;votes&amp;#39;); // bigint 20
+binary(&amp;#39;data&amp;#39;); // blob 0
+boolean(&amp;#39;confirmed&amp;#39;); // tinyint 1
+date(&amp;#39;created_at&amp;#39;); // date 0
+dateTime(&amp;#39;created_at&amp;#39;); // datetime 0
+decimal(&amp;#39;amount&amp;#39;, 5, 2); // decimal 5,2
+double(&amp;#39;column&amp;#39;, 15, 8); // double 15,8
+enum(&amp;#39;choices&amp;#39;, array(&amp;#39;foo&amp;#39;, &amp;#39;bar&amp;#39;)); // enum 0 value:&amp;#39;foo&amp;#39;,&amp;#39;bar&amp;#39;
+float(&amp;#39;amount&amp;#39;); // float 8,2
+increments(&amp;#39;id&amp;#39;); // int 10 pk
+integer(&amp;#39;votes&amp;#39;); // int 11 pk
+longText(&amp;#39;description&amp;#39;); // longtext 0
+mediumText(&amp;#39;description&amp;#39;); // mediumtext 0
+morphs(&amp;#39;tagglable&amp;#39;); // tagglable_id:int 10 另1个为:tagglable_type:varchar 255
+smallInteger(&amp;#39;votes&amp;#39;); // smallint 6
+softDeletes(); // add columns named deleted_at timestamp 0
+string(&amp;#39;email&amp;#39;); // varchar 255
+string(&amp;#39;name&amp;#39;, 100); // varchar 100 
+text(&amp;#39;description&amp;#39;); // text 0 
+time(&amp;#39;sunrise&amp;#39;); // time 0
+timestamp(&amp;#39;added_on&amp;#39;); // add column named created_at timestamp 0, other column named updated_at timestamp 0
+timestamps();
+nullable(); // 允许为空
+default($value); // 设置默认值
+unsigned(); // 无符号数值指定
+
+注意：可以使用after来指定顺序，如：$table-&amp;gt;string(&amp;#39;name&amp;#39;)-&amp;gt;after(&amp;#39;email&amp;#39;);&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;改名&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Schema::table(&amp;#39;users&amp;#39;, function($table)
+{
+	$table-&amp;gt;renameColumn(&amp;#39;from&amp;#39;, &amp;#39;to&amp;#39;);
+});&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;删除&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Schema::table(&amp;#39;users&amp;#39;, function($table)
+{
+	// 单字段
+	$table-&amp;gt;dropColumn(&amp;#39;votes&amp;#39;);
+	// 多字段
+	$table-&amp;gt;dropColumn(&amp;#39;votes&amp;#39;, &amp;#39;avatar&amp;#39;, &amp;#39;location&amp;#39;);
+});&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;检测存在&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if(Schema::hasTable(&amp;#39;users&amp;#39;))
+{
+	// 检测表
+}
+
+if(Schema::hasColumn(&amp;#39;users&amp;#39;, &amp;#39;email&amp;#39;))
+{
+	// 检测表中字段
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;索引-提高性能&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;创建索引&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$table-&amp;gt;primary(&amp;#39;id&amp;#39;); // 主键索引
+$table-&amp;gt;primary(array(&amp;#39;first&amp;#39;, &amp;#39;last&amp;#39;)); // 组合索引
+$table-&amp;gt;unique(&amp;#39;email&amp;#39;); // 唯一索引，也可以直接添加到定义字段后
+$table-&amp;gt;index(&amp;#39;state&amp;#39;); // 基本索引&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;删除索引&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$table-&amp;gt;dropPrimary(&amp;#39;id&amp;#39;);
+$table-&amp;gt;dropUnique(&amp;#39;email&amp;#39;);
+$table-&amp;gt;dropIndex(&amp;#39;state&amp;#39;);&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;外键约束-常常不使用&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;添加外键&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$table-&amp;gt;foreign(&amp;#39;user_id&amp;#39;)-&amp;gt;references(&amp;#39;id&amp;#39;)-&amp;gt;on(&amp;#39;users&amp;#39;);&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;声明约束&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$table-&amp;gt;foreign(&amp;#39;user_id&amp;#39;)
+	-&amp;gt;references(&amp;#39;id&amp;#39;)-&amp;gt;on(&amp;#39;users&amp;#39;)
+	-&amp;gt;onDelete(&amp;#39;cascade&amp;#39;);&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;删除外键&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$table-&amp;gt;dropForeign(&amp;#39;user_id&amp;#39;);&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;存储引擎选择&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Schema::table(&amp;#39;users&amp;#39;, function($data)
+{
+	$table-&amp;gt;engine = &amp;#39;InnoDB&amp;#39;;
+	$table-&amp;gt;string(&amp;#39;email&amp;#39;);
+});&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</content>
  </entry>
  
  

@@ -10,3 +10,4 @@ http://dev.dotisv.com/sitemap.txt
 http://dev.dotisv.com/tags.html
 
 http://dev.dotisv.com/2014/01/24/laravel-prepare-knowledge
+http://dev.dotisv.com/2014/01/24/laravel-about-make-tables-of-db
