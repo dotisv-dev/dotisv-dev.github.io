@@ -5,8 +5,8 @@
         <description>点 - dotisv</description>
         <link>http://dev.dotisv.com</link>
         <link>http://dev.dotisv.com</link>
-        <lastBuildDate>2014-01-26T21:40:53+08:00</lastBuildDate>
-        <pubDate>2014-01-26T21:40:53+08:00</pubDate>
+        <lastBuildDate>2014-01-26T21:44:55+08:00</lastBuildDate>
+        <pubDate>2014-01-26T21:44:55+08:00</pubDate>
         <ttl>1800</ttl>
 
 
@@ -88,7 +88,7 @@
                 <title>Laravel之数据的那点事</title>
                 <description>&lt;h1 id=&quot;&quot;&gt;数据层&lt;/h1&gt;
 
-&lt;p&gt;Web开发离不开MVC，M离不开持久层，先从数据库结构定义开始分析吧&lt;/p&gt;
+&lt;p&gt;Web开发离不开MVC，M离不开持久层，从数据库结构定义开始分析吧&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;
